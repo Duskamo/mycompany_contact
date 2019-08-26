@@ -1,5 +1,6 @@
 from flask import Flask, request
 import os
+import json
 from src.EmailClient import EmailClient
 app = Flask(__name__)
 
@@ -7,8 +8,8 @@ app = Flask(__name__)
 @app.route('/contact', methods=['POST'])
 def send_contact():
 	# Gather Data
-	contactInfo = request.json
-	
+	contactInfo = json.loads(request.json)
+
 	# Send email to dlandry email server using client contact info
 	emailClient = EmailClient()
 
@@ -18,7 +19,7 @@ def send_contact():
 	emailClient.addMessage(contactInfo['message'])
 
 	emailClient.send()
-	
+
 	# Return status code
 	return "200"
 
